@@ -156,14 +156,16 @@ details[open] summary {
   touch-action: manipulation;
 }
 
-/* fade/scale in when an image has loaded to avoid slow pan-in effect */
+/* fade/scale in for a calm reveal when slides open */
 .slides img {
   opacity: 0;
   transform: scale(0.996);
   /* make image fade/settle more leisurely */
   transition: opacity 920ms ease, transform 920ms ease;
 }
-.slides img.loaded {
+
+/* show images when the slides container is opened via JS-driven class */
+.slides.js-open img {
   opacity: 1;
   transform: none;
 }

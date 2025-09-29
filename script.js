@@ -5,8 +5,6 @@
   if (!images.length) return
 
   let currentIndex = -1
-  let startX = 0
-  let moved = false
 
   function createOverlay() {
     const overlay = document.createElement('div')
@@ -69,6 +67,8 @@
     // touch support: swipe left/right to change
     let touchStartX = 0
     let touchCurrentX = 0
+    // moved is scoped to this overlay instance so it doesn't leak globally
+    let moved = false
     overlay.addEventListener(
       'touchstart',
       (e) => {
@@ -105,7 +105,6 @@
       else if (e.key === 'ArrowLeft') showIndex(currentIndex - 1)
     }
 
-    overlay._onKey = onKey
     document.addEventListener('keydown', onKey)
 
     document.body.appendChild(overlay)
@@ -122,28 +121,8 @@
 
   let overlayEl = null
 
-  function preload(idx) {
-    if (idx < 0 || idx >= images.length) return
-    const src = images[idx].src
-    const img = new Image()
-    img.src = src
-  }
-
-  // Preload all images inside a particular .slides element
-  function preloadSlides(slidesEl) {
-    if (!slidesEl) return
-    const imgs = Array.from(slidesEl.querySelectorAll('img'))
-    imgs.forEach((i) => {
-      if (i.complete) {
-        i.classList.add('loaded')
-        return
-      }
-      const tmp = new Image()
-      tmp.src = i.src
-      tmp.onload = () => i.classList.add('loaded')
-      tmp.onerror = () => i.classList.add('loaded')
-    })
-  }
+  // NOTE: image preloading / load listeners removed — visibility is driven
+  // by the `.js-open` animation class on the slides container.
 
   function showIndex(i) {
     if (!overlayEl) return
@@ -154,9 +133,6 @@
     const src = images[currentIndex].src
     imgEl.src = src
     imgEl.alt = images[currentIndex].alt || ''
-    // preload neighbors
-    preload(currentIndex - 1)
-    preload(currentIndex + 1)
   }
 
   function openOverlay(startIdx) {
@@ -217,7 +193,6 @@
     // class on the slides element to reliably retrigger the open animation
     d.addEventListener('toggle', () => {
       if (d.open) {
-        preloadSlides(slides)
         // remove class first if present to allow reflow-based retrigger
         slides.classList.remove('js-open')
         // force reflow
@@ -228,17 +203,8 @@
         slides.classList.remove('js-open')
       }
     })
-
-    // Preload when the user might be about to open (hover/focus/touchstart)
-    const preloadOnce = { once: true }
-    d.addEventListener('pointerenter', () => preloadSlides(slides), preloadOnce)
-    d.addEventListener('focusin', () => preloadSlides(slides), preloadOnce)
-    d.addEventListener('touchstart', () => preloadSlides(slides), preloadOnce)
   })
 
-  // Mark any images already loaded on page load as .loaded
-  images.forEach((img) => {
-    if (img.complete) img.classList.add('loaded')
-    else img.addEventListener('load', () => img.classList.add('loaded'))
-  })
+  // No per-image load listeners — image visibility is driven by the
+  // `.js-open` class on the slides container.
 })()
