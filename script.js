@@ -129,6 +129,22 @@
     img.src = src
   }
 
+  // Preload all images inside a particular .slides element
+  function preloadSlides(slidesEl) {
+    if (!slidesEl) return
+    const imgs = Array.from(slidesEl.querySelectorAll('img'))
+    imgs.forEach((i) => {
+      if (i.complete) {
+        i.classList.add('loaded')
+        return
+      }
+      const tmp = new Image()
+      tmp.src = i.src
+      tmp.onload = () => i.classList.add('loaded')
+      tmp.onerror = () => i.classList.add('loaded')
+    })
+  }
+
   function showIndex(i) {
     if (!overlayEl) return
     if (i < 0) i = images.length - 1
@@ -190,4 +206,39 @@
     // We also remove tabindex from images to avoid accidental keyboard focus.
     images.forEach((img) => img.removeAttribute('tabindex'))
   }
+
+  // Attach preloading behavior to each details summary to improve perceived load speed
+  const details = Array.from(document.querySelectorAll('details'))
+  details.forEach((d) => {
+    const slides = d.querySelector('.slides')
+    if (!slides) return
+
+    // When the details is toggled, preload images and add/remove a JS-driven
+    // class on the slides element to reliably retrigger the open animation
+    d.addEventListener('toggle', () => {
+      if (d.open) {
+        preloadSlides(slides)
+        // remove class first if present to allow reflow-based retrigger
+        slides.classList.remove('js-open')
+        // force reflow
+        // eslint-disable-next-line no-unused-expressions
+        slides.offsetHeight
+        slides.classList.add('js-open')
+      } else {
+        slides.classList.remove('js-open')
+      }
+    })
+
+    // Preload when the user might be about to open (hover/focus/touchstart)
+    const preloadOnce = { once: true }
+    d.addEventListener('pointerenter', () => preloadSlides(slides), preloadOnce)
+    d.addEventListener('focusin', () => preloadSlides(slides), preloadOnce)
+    d.addEventListener('touchstart', () => preloadSlides(slides), preloadOnce)
+  })
+
+  // Mark any images already loaded on page load as .loaded
+  images.forEach((img) => {
+    if (img.complete) img.classList.add('loaded')
+    else img.addEventListener('load', () => img.classList.add('loaded'))
+  })
 })()

@@ -136,6 +136,13 @@ details[open] summary {
   display: flex;
   flex-direction: column; /* vertical scrollable slides */
   gap: 1rem;
+  /* start collapsed visually for animation (details handles real collapsing) */
+  transform-origin: top;
+  transform: scaleY(0.98) translateY(-4px);
+  opacity: 0;
+  /* slower, more meditative open animation */
+  transition: transform 920ms cubic-bezier(0.22, 0.9, 0.33, 1),
+    opacity 820ms ease;
 }
 
 .slides img {
@@ -147,6 +154,18 @@ details[open] summary {
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
   touch-action: manipulation;
+}
+
+/* fade/scale in when an image has loaded to avoid slow pan-in effect */
+.slides img {
+  opacity: 0;
+  transform: scale(0.996);
+  /* make image fade/settle more leisurely */
+  transition: opacity 920ms ease, transform 920ms ease;
+}
+.slides img.loaded {
+  opacity: 1;
+  transform: none;
 }
 
 .slides .slide-link {
@@ -273,6 +292,48 @@ details[open] summary {
   .lightbox-controls {
     display: none;
   }
+}
+
+/* Use a JS-driven class to control the open state so the animation can be
+   reliably retriggered on every toggle (browsers can optimize native
+   details changes and skip CSS transitions on subsequent toggles). */
+.slides.js-open {
+  transform: none;
+  opacity: 1;
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .slides,
+  .slides img {
+    transition: none !important;
+  }
+}
+
+/* gentle stagger so each image settles one after another for a calmer feel */
+.slides a:nth-child(1) img {
+  transition-delay: 0ms;
+}
+.slides a:nth-child(2) img {
+  transition-delay: 120ms;
+}
+.slides a:nth-child(3) img {
+  transition-delay: 240ms;
+}
+.slides a:nth-child(4) img {
+  transition-delay: 360ms;
+}
+.slides a:nth-child(5) img {
+  transition-delay: 480ms;
+}
+.slides a:nth-child(6) img {
+  transition-delay: 600ms;
+}
+.slides a:nth-child(7) img {
+  transition-delay: 720ms;
+}
+.slides a:nth-child(8) img {
+  transition-delay: 840ms;
 }
 
 /* Large screen tweaks */
