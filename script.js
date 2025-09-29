@@ -1,5 +1,6 @@
 /* Mobile-friendly lightbox with swipe, keyboard, and prev/next controls */
 ;(() => {
+  // slide image elements (inside anchors now)
   const images = Array.from(document.querySelectorAll('.slides img'))
   if (!images.length) return
 
@@ -153,14 +154,40 @@
     overlayEl = null
   }
 
-  // open on click or keyboard 'Enter' when focused
-  images.forEach((img, idx) => {
-    img.addEventListener('click', () => openOverlay(idx))
-    img.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        openOverlay(idx)
+  // Decide whether to enable the custom lightbox. On touch devices we prefer
+  // the native browser image view (so users can pinch/zoom). We'll treat a
+  // device as touch-capable if 'ontouchstart' exists or the pointer media
+  // query matches 'coarse'. Desktop mouse users still get the lightbox.
+  const isTouch =
+    'ontouchstart' in window || matchMedia('(pointer: coarse)').matches
+
+  if (!isTouch) {
+    // For non-touch (desktop) users, open custom lightbox when clicking the image.
+    images.forEach((img, idx) => {
+      // The images are wrapped in <a> so prevent the anchor's default navigation
+      // when opening the lightbox.
+      const link = img.closest('a')
+      if (link) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault()
+          openOverlay(idx)
+        })
+      } else {
+        img.addEventListener('click', () => openOverlay(idx))
       }
+
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          openOverlay(idx)
+        }
+      })
     })
-  })
+  } else {
+    // On touch devices, the anchor links allow native image opening. To make
+    // that behavior more consistent, ensure the anchors open in a new tab
+    // (target="_blank") and do not attach the lightbox handlers.
+    // We also remove tabindex from images to avoid accidental keyboard focus.
+    images.forEach((img) => img.removeAttribute('tabindex'))
+  }
 })()

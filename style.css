@@ -149,6 +149,11 @@ details[open] summary {
   touch-action: manipulation;
 }
 
+.slides .slide-link {
+  display: block;
+  width: 100%;
+}
+
 .slides img:focus {
   outline: 3px solid rgba(106, 156, 120, 0.28);
   transform: none;
@@ -260,6 +265,13 @@ details[open] summary {
 
   .slides img {
     max-width: 100%;
+    max-height: 70vh; /* make images larger in-page on mobile */
+    object-fit: contain;
+  }
+
+  /* hide lightbox controls on touch devices so they don't overlap the image */
+  .lightbox-controls {
+    display: none;
   }
 }
 
