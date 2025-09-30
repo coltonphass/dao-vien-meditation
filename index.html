@@ -4,10 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dao Vien Meditation</title>
+    <meta
+      name="description"
+      content="Dao Vien Meditation — weekly community meditation and Dharma talks. Find lessons, slides, and our event calendar."
+    />
+    <link rel="canonical" href="https://daovienmeditation.com/" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Dao Vien Meditation" />
+    <meta
+      property="og:description"
+      content="Join our weekly meditation and Dharma teachings. View lessons, slides, and upcoming events."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://daovienmeditation.com/" />
+    <meta
+      property="og:image"
+      content="https://daovienmeditation.com/buddha.avif"
+    />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dao Vien Meditation" />
+    <meta
+      name="twitter:description"
+      content="Join our weekly meditation and Dharma teachings. View lessons, slides, and upcoming events."
+    />
+    <meta
+      name="twitter:image"
+      content="https://daovienmeditation.com/buddha.avif"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preload hero image to improve LCP prioritization -->
+    <link rel="preload" as="image" href="buddha.avif" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/png" href="logo-tuvien.png" />
   </head>
@@ -38,7 +70,16 @@
           </section>
 
           <div class="buddha-container">
-            <img src="buddha.jpg" alt="Buddha" class="buddha-img" />
+            <img
+              src="buddha.avif"
+              alt="Buddha"
+              class="buddha-img"
+              width="2305"
+              height="1671"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
           </div>
         </main>
       </div>
@@ -61,7 +102,15 @@
                 data-index="0"
                 aria-roledescription="slide"
               >
-                <img class="avatar" src="logo-tuvien.png" alt="Linh avatar" />
+                <img
+                  class="avatar"
+                  src="logo-tuvien.png"
+                  alt="Soleil avatar"
+                  width="64"
+                  height="64"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <blockquote>
                   <p>
                     "Before I started coming to the English meditation class, I
@@ -106,7 +155,15 @@
                 data-index="1"
                 aria-roledescription="slide"
               >
-                <img class="avatar" src="colton.png" alt="Colton avatar" />
+                <img
+                  class="avatar"
+                  src="colton.avif"
+                  alt="Colton avatar"
+                  width="460"
+                  height="460"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <blockquote>
                   <p>
                     "I was hesitant to step into a new environment, especially
