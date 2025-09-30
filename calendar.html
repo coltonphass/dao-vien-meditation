@@ -20,6 +20,9 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="style.css" />
+    <!-- Preconnect to Google origins to reduce connection setup time for the calendar iframe -->
+    <link rel="preconnect" href="https://calendar.google.com" />
+    <link rel="preconnect" href="https://www.google.com" />
   </head>
   <body class="lessons-page">
     <header class="header">
@@ -31,15 +34,77 @@
       <section class="calendar-section">
         <h2>Upcoming events</h2>
         <div class="calendar-viewport">
-          <!-- Embedded sangha calendar (responsive). -->
-          <iframe
-            class="calendar-iframe"
-            src="https://calendar.google.com/calendar/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York"
-            frameborder="0"
-            scrolling="no"
-            aria-label="Dao Vien Sangha events calendar"
-          ></iframe>
+          <!-- Placeholder that lazy-loads the Google Calendar iframe on user interaction or when visible -->
+          <div
+            id="calendar-placeholder"
+            style="
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: #fff;
+            "
+          >
+            <button
+              id="load-calendar"
+              class="btn"
+              style="
+                background: #6b8e6f;
+                color: #fff;
+                padding: 10px 16px;
+                border-radius: 8px;
+              "
+            >
+              Load Calendar
+            </button>
+          </div>
         </div>
+        <script>
+          ;(function () {
+            const placeholder = document.getElementById('calendar-placeholder')
+            const loadBtn = document.getElementById('load-calendar')
+            const iframeSrc =
+              'https://calendar.google.com/calendar/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York'
+
+            function insertIframe() {
+              if (!placeholder) return
+              if (placeholder.dataset.loaded === 'true') return
+              const iframe = document.createElement('iframe')
+              iframe.className = 'calendar-iframe'
+              iframe.src = iframeSrc
+              iframe.frameBorder = '0'
+              iframe.scrolling = 'no'
+              iframe.setAttribute(
+                'aria-label',
+                'Dao Vien Sangha events calendar'
+              )
+              placeholder.innerHTML = ''
+              placeholder.appendChild(iframe)
+              placeholder.dataset.loaded = 'true'
+            }
+
+            if (loadBtn) loadBtn.addEventListener('click', insertIframe)
+
+            if ('IntersectionObserver' in window) {
+              const io = new IntersectionObserver(
+                (entries, obs) => {
+                  entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                      insertIframe()
+                      obs.disconnect()
+                    }
+                  })
+                },
+                { rootMargin: '200px' }
+              )
+              io.observe(placeholder)
+            }
+          })()
+        </script>
       </section>
     </main>
 

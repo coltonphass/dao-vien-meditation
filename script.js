@@ -251,8 +251,11 @@
     let index = 0
 
     function update() {
-      const width = slider.querySelector('.slider-viewport').clientWidth
-      const offset = index * width
+      // Use slide position (offsetLeft) so gaps and padding don't cause
+      // misalignment. This avoids calculating width+gap and works when
+      // slides have varying min-widths.
+      const slide = slides[index]
+      const offset = slide ? slide.offsetLeft : 0
       track.style.transform = `translateX(-${offset}px)`
       // update dots
       Array.from(dotsWrap.children).forEach((d, i) =>
