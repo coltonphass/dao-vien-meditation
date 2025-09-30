@@ -201,6 +201,14 @@ a {
   background: #ffffff;
 }
 
+/* container for primary CTAs in the hero */
+.hero-cta {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
 .hero-btn:active {
   transform: translateY(-1px);
 }
@@ -587,6 +595,9 @@ details[open] summary {
     animation: none !important;
     transition: none !important;
   }
+  .testimonial blockquote > p {
+    transition: none !important;
+  }
 }
 
 /* Gentle stagger for slide images */
@@ -623,4 +634,187 @@ details[open] summary {
   .slides {
     gap: 1.5rem;
   }
+}
+
+/* Testimonials */
+.testimonials {
+  padding: 2.2rem 1rem;
+  background: linear-gradient(180deg, #fbfbfb 0%, #f6f6f4 100%);
+  margin-top: 2rem;
+}
+.testimonials .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+.testimonials-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #2f3b2f;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+.testimonial {
+  background: white;
+  padding: 1rem 1.1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  font-style: italic;
+}
+.testimonial .cite {
+  margin-top: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  color: #555;
+}
+
+@media (min-width: 700px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Slider styles */
+.testimonial-slider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.slider-viewport {
+  width: 100%;
+  max-width: 720px;
+  overflow: hidden;
+}
+.slider-track {
+  display: flex;
+  gap: 12px;
+  transition: transform 520ms cubic-bezier(0.22, 0.9, 0.33, 1);
+}
+.testimonial {
+  min-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start; /* allow text to flow from the top */
+  padding: 1rem 1.2rem; /* ensure content doesn't touch edges */
+}
+.testimonial img.avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px; /* small visual offset so avatar lines with first line of text */
+}
+
+.testimonial blockquote {
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto; /* let blockquote take remaining space */
+}
+
+.testimonial blockquote > p {
+  margin: 0 0 0.5rem 0;
+  padding-right: 12px; /* keep text away from right edge */
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.slider-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.slider-dots {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+}
+.slider-dot.active {
+  background: #6a9c78;
+}
+
+@media (min-width: 700px) {
+  .testimonial {
+    min-width: 50%;
+  }
+  .slider-track {
+    gap: 20px;
+  }
+}
+
+/* Read-more collapse: animate max-height for smooth expand/collapse */
+.testimonial blockquote > p {
+  max-height: 2000px; /* large default */
+  overflow: hidden;
+  padding-bottom: 1.1rem; /* space so the read-more button sits below */
+  transition: max-height 520ms cubic-bezier(0.22, 0.9, 0.33, 1);
+}
+.testimonial blockquote > p.collapsed {
+  max-height: 120px;
+}
+.read-more-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #6a9c78;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0; /* keep it compact */
+}
+
+/* Calendar page styles */
+.calendar-section {
+  max-width: 1100px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+.calendar-viewport {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  margin-top: 18px; /* spacing under heading */
+}
+.calendar-iframe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Make the embedded calendar taller on small screens for better readability */
+@media (max-width: 600px) {
+  .calendar-viewport {
+    padding-top: 100%; /* 1:1 on small screens for extra vertical room */
+  }
+}
+
+/* Touch feedback */
+.slider-viewport {
+  touch-action: pan-y;
+}
+.slider-track {
+  -webkit-user-select: none;
+  user-select: none;
 }
