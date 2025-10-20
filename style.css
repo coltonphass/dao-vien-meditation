@@ -694,14 +694,17 @@ details[open] summary {
   display: flex;
   gap: 16px;
   transition: transform 520ms cubic-bezier(0.22, 0.9, 0.33, 1);
+  transform: translateX(0); /* ensure neutral start to avoid initial offset */
+  will-change: transform;
 }
 .testimonial {
-  min-width: 100%;
+  flex: 0 0 calc(100% - 16px); /* leave space for the track gap */
+  max-width: calc(100% - 16px);
   box-sizing: border-box;
   display: flex;
   gap: 12px;
-  align-items: flex-start; /* allow text to flow from the top */
-  padding: 1rem; /* ensure consistent spacing on both sides */
+  align-items: flex-start;
+  padding: 1rem;
 }
 .testimonial img.avatar {
   width: 64px;
@@ -710,17 +713,11 @@ details[open] summary {
   border-radius: 50%;
   flex-shrink: 0;
   margin-top: 4px; /* small visual offset so avatar lines with first line of text */
+  display: block; /* ensure predictable layout and no inline-image gaps */
 }
-
-.testimonial blockquote {
-  margin: 0;
-  padding: 0;
-  flex: 1 1 auto; /* let blockquote take remaining space */
-}
-
 .testimonial blockquote > p {
   margin: 0 0 0.5rem 0;
-  padding-right: 14px; /* keep text away from right edge */
+  padding-right: 18px; /* keep text away from right edge */
   color: #333;
   font-size: 1rem;
   line-height: 1.6;
@@ -751,7 +748,8 @@ details[open] summary {
 
 @media (min-width: 700px) {
   .testimonial {
-    min-width: 50%;
+    flex: 0 0 calc(50% - 10px); /* two columns + 20px gap -> widths sum to 100% */
+    max-width: calc(50% - 10px);
   }
   .slider-track {
     gap: 20px;
@@ -837,4 +835,28 @@ details[open] summary {
 .slider-track {
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* Add: stronger touch/overscroll handling for testimonial/carousel containers */
+.testimonials,
+.carousel,
+.testimonial-list {
+  /* allow the user to scroll vertically without the browser treating gesture as horizontal swipe */
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* prevent parent from stealing scroll gestures */
+}
+
+/* If you're using CSS scroll-snap for horizontal slides, make it less aggressive on small screens */
+@media (max-width: 700px) {
+  .testimonials,
+  .carousel,
+  .testimonial-list {
+    scroll-snap-type: none; /* allow natural vertical scroll to not snap to next item */
+  }
+}
+
+/* Optional: if you use :target anchors that shift layout, neutralize jump */
+:target {
+  scroll-margin-top: 0; /* minimize layout shift when linking to anchors */
 }

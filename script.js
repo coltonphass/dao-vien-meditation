@@ -1,166 +1,166 @@
 /* Mobile-friendly lightbox with swipe, keyboard, and prev/next controls */
-;(() => {
+(() => {
   // slide image elements (inside anchors now)
-  const images = Array.from(document.querySelectorAll('.slides img'))
+  const images = Array.from(document.querySelectorAll('.slides img'));
 
   // Only run the slides/lightbox/preload logic when slides exist on the page.
   if (images.length) {
-    let currentIndex = -1
+    let currentIndex = -1;
 
     function createOverlay() {
-      const overlay = document.createElement('div')
-      overlay.className = 'lightbox-overlay'
-      overlay.setAttribute('role', 'dialog')
-      overlay.setAttribute('aria-modal', 'true')
-      overlay.tabIndex = -1
+      const overlay = document.createElement('div');
+      overlay.className = 'lightbox-overlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.tabIndex = -1;
 
       // Image element
-      const img = document.createElement('img')
-      img.className = 'lightbox-img'
-      img.alt = ''
-      overlay.appendChild(img)
+      const img = document.createElement('img');
+      img.className = 'lightbox-img';
+      img.alt = '';
+      overlay.appendChild(img);
 
       // Controls container
-      const controls = document.createElement('div')
-      controls.className = 'lightbox-controls'
+      const controls = document.createElement('div');
+      controls.className = 'lightbox-controls';
 
-      const prevBtn = document.createElement('button')
-      prevBtn.className = 'lightbox-btn prev'
-      prevBtn.innerHTML = '&#x276E;'
-      prevBtn.title = 'Previous'
-      prevBtn.ariaLabel = 'Previous slide'
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'lightbox-btn prev';
+      prevBtn.innerHTML = '&#x276E;';
+      prevBtn.title = 'Previous';
+      prevBtn.ariaLabel = 'Previous slide';
 
-      const nextBtn = document.createElement('button')
-      nextBtn.className = 'lightbox-btn next'
-      nextBtn.innerHTML = '&#x276F;'
-      nextBtn.title = 'Next'
-      nextBtn.ariaLabel = 'Next slide'
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'lightbox-btn next';
+      nextBtn.innerHTML = '&#x276F;';
+      nextBtn.title = 'Next';
+      nextBtn.ariaLabel = 'Next slide';
 
-      controls.appendChild(prevBtn)
-      controls.appendChild(nextBtn)
-      overlay.appendChild(controls)
+      controls.appendChild(prevBtn);
+      controls.appendChild(nextBtn);
+      overlay.appendChild(controls);
 
-      const closeBtn = document.createElement('button')
-      closeBtn.className = 'lightbox-close'
-      closeBtn.innerHTML = '✕'
-      closeBtn.title = 'Close'
-      closeBtn.ariaLabel = 'Close'
-      overlay.appendChild(closeBtn)
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'lightbox-close';
+      closeBtn.innerHTML = '✕';
+      closeBtn.title = 'Close';
+      closeBtn.ariaLabel = 'Close';
+      overlay.appendChild(closeBtn);
 
       // Event listeners
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeOverlay()
-      })
+        if (e.target === overlay) closeOverlay();
+      });
 
       prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation()
-        showIndex(currentIndex - 1)
-      })
+        e.stopPropagation();
+        showIndex(currentIndex - 1);
+      });
       nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation()
-        showIndex(currentIndex + 1)
-      })
+        e.stopPropagation();
+        showIndex(currentIndex + 1);
+      });
       closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation()
-        closeOverlay()
-      })
+        e.stopPropagation();
+        closeOverlay();
+      });
 
       // touch support: swipe left/right to change
-      let touchStartX = 0
-      let touchCurrentX = 0
+      let touchStartX = 0;
+      let touchCurrentX = 0;
       // moved is scoped to this overlay instance so it doesn't leak globally
-      let moved = false
+      let moved = false;
       overlay.addEventListener(
         'touchstart',
         (e) => {
-          if (!e.touches || e.touches.length !== 1) return
-          touchStartX = e.touches[0].clientX
-          touchCurrentX = touchStartX
-          moved = false
+          if (!e.touches || e.touches.length !== 1) return;
+          touchStartX = e.touches[0].clientX;
+          touchCurrentX = touchStartX;
+          moved = false;
         },
         { passive: true }
-      )
+      );
 
       overlay.addEventListener(
         'touchmove',
         (e) => {
-          if (!e.touches || e.touches.length !== 1) return
-          touchCurrentX = e.touches[0].clientX
-          const delta = touchCurrentX - touchStartX
-          if (Math.abs(delta) > 10) moved = true
+          if (!e.touches || e.touches.length !== 1) return;
+          touchCurrentX = e.touches[0].clientX;
+          const delta = touchCurrentX - touchStartX;
+          if (Math.abs(delta) > 10) moved = true;
         },
         { passive: true }
-      )
+      );
 
       overlay.addEventListener('touchend', (e) => {
-        if (!moved) return
-        const delta = touchCurrentX - touchStartX
-        if (delta > 50) showIndex(currentIndex - 1)
-        else if (delta < -50) showIndex(currentIndex + 1)
-      })
+        if (!moved) return;
+        const delta = touchCurrentX - touchStartX;
+        if (delta > 50) showIndex(currentIndex - 1);
+        else if (delta < -50) showIndex(currentIndex + 1);
+      });
 
       // keyboard navigation
       function onKey(e) {
-        if (e.key === 'Escape') closeOverlay()
-        else if (e.key === 'ArrowRight') showIndex(currentIndex + 1)
-        else if (e.key === 'ArrowLeft') showIndex(currentIndex - 1)
+        if (e.key === 'Escape') closeOverlay();
+        else if (e.key === 'ArrowRight') showIndex(currentIndex + 1);
+        else if (e.key === 'ArrowLeft') showIndex(currentIndex - 1);
       }
 
-      document.addEventListener('keydown', onKey)
+      document.addEventListener('keydown', onKey);
 
-      document.body.appendChild(overlay)
+      document.body.appendChild(overlay);
       // trap focus
-      overlay.focus()
+      overlay.focus();
 
       overlay._cleanup = () => {
-        document.removeEventListener('keydown', onKey)
-        overlay.remove()
-      }
+        document.removeEventListener('keydown', onKey);
+        overlay.remove();
+      };
 
-      return overlay
+      return overlay;
     }
 
-    let overlayEl = null
+    let overlayEl = null;
 
     function preload(src) {
-      if (!src) return
-      const i = new Image()
-      i.src = src
+      if (!src) return;
+      const i = new Image();
+      i.src = src;
     }
 
     // Preload all images inside a particular .slides element
     function preloadSlides(slidesEl) {
-      if (!slidesEl) return
-      const imgs = Array.from(slidesEl.querySelectorAll('img'))
-      imgs.forEach((img) => preload(img.src))
+      if (!slidesEl) return;
+      const imgs = Array.from(slidesEl.querySelectorAll('img'));
+      imgs.forEach((img) => preload(img.src));
     }
 
     // NOTE: image preloading / load listeners removed — visibility is driven
     // by the `.js-open` animation class on the slides container.
 
     function showIndex(i) {
-      if (!overlayEl) return
-      if (i < 0) i = images.length - 1
-      if (i >= images.length) i = 0
-      currentIndex = i
-      const imgEl = overlayEl.querySelector('.lightbox-img')
-      const src = images[currentIndex].src
-      imgEl.src = src
-      imgEl.alt = images[currentIndex].alt || ''
+      if (!overlayEl) return;
+      if (i < 0) i = images.length - 1;
+      if (i >= images.length) i = 0;
+      currentIndex = i;
+      const imgEl = overlayEl.querySelector('.lightbox-img');
+      const src = images[currentIndex].src;
+      imgEl.src = src;
+      imgEl.alt = images[currentIndex].alt || '';
       // preload neighbors for snappy next/prev
-      preload(images[(currentIndex - 1 + images.length) % images.length].src)
-      preload(images[(currentIndex + 1) % images.length].src)
+      preload(images[(currentIndex - 1 + images.length) % images.length].src);
+      preload(images[(currentIndex + 1) % images.length].src);
     }
 
     function openOverlay(startIdx) {
-      overlayEl = createOverlay()
-      showIndex(startIdx)
+      overlayEl = createOverlay();
+      showIndex(startIdx);
     }
 
     function closeOverlay() {
-      if (!overlayEl) return
-      overlayEl._cleanup()
-      overlayEl = null
+      if (!overlayEl) return;
+      overlayEl._cleanup();
+      overlayEl = null;
     }
 
     // Decide whether to enable the custom lightbox. On touch devices we prefer
@@ -168,70 +168,74 @@
     // device as touch-capable if 'ontouchstart' exists or the pointer media
     // query matches 'coarse'. Desktop mouse users still get the lightbox.
     const isTouch =
-      'ontouchstart' in window || matchMedia('(pointer: coarse)').matches
+      'ontouchstart' in window || matchMedia('(pointer: coarse)').matches;
 
     if (!isTouch) {
       // For non-touch (desktop) users, open custom lightbox when clicking the image.
       images.forEach((img, idx) => {
         // The images are wrapped in <a> so prevent the anchor's default navigation
         // when opening the lightbox.
-        const link = img.closest('a')
+        const link = img.closest('a');
         if (link) {
           link.addEventListener('click', (e) => {
-            e.preventDefault()
-            openOverlay(idx)
-          })
+            e.preventDefault();
+            openOverlay(idx);
+          });
         } else {
-          img.addEventListener('click', () => openOverlay(idx))
+          img.addEventListener('click', () => openOverlay(idx));
         }
 
         img.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            openOverlay(idx)
+            e.preventDefault();
+            openOverlay(idx);
           }
-        })
-      })
+        });
+      });
     } else {
       // On touch devices, the anchor links allow native image opening. To make
       // that behavior more consistent, ensure the anchors open in a new tab
       // (target="_blank") and do not attach the lightbox handlers.
       // We also remove tabindex from images to avoid accidental keyboard focus.
-      images.forEach((img) => img.removeAttribute('tabindex'))
+      images.forEach((img) => img.removeAttribute('tabindex'));
     }
 
     // Attach preloading behavior to each details summary to improve perceived load speed
-    const details = Array.from(document.querySelectorAll('details'))
+    const details = Array.from(document.querySelectorAll('details'));
     details.forEach((d) => {
-      const slides = d.querySelector('.slides')
-      if (!slides) return
+      const slides = d.querySelector('.slides');
+      if (!slides) return;
 
       // When the details is toggled, preload images and add/remove a JS-driven
       // class on the slides element to reliably retrigger the open animation
       d.addEventListener('toggle', () => {
         if (d.open) {
-          preloadSlides(slides)
+          preloadSlides(slides);
           // remove class first if present to allow reflow-based retrigger
-          slides.classList.remove('js-open')
+          slides.classList.remove('js-open');
           // force reflow
           // eslint-disable-next-line no-unused-expressions
-          slides.offsetHeight
-          slides.classList.add('js-open')
+          slides.offsetHeight;
+          slides.classList.add('js-open');
         } else {
-          slides.classList.remove('js-open')
+          slides.classList.remove('js-open');
         }
-      })
+      });
 
       // Preload when the user might be about to open (hover/focus/touchstart)
-      const preloadOnce = { once: true }
+      const preloadOnce = { once: true };
       d.addEventListener(
         'pointerenter',
         () => preloadSlides(slides),
         preloadOnce
-      )
-      d.addEventListener('focusin', () => preloadSlides(slides), preloadOnce)
-      d.addEventListener('touchstart', () => preloadSlides(slides), preloadOnce)
-    })
+      );
+      d.addEventListener('focusin', () => preloadSlides(slides), preloadOnce);
+      d.addEventListener(
+        'touchstart',
+        () => preloadSlides(slides),
+        preloadOnce
+      );
+    });
 
     // No per-image load listeners — image visibility is driven by the
     // `.js-open` class on the slides container.
@@ -239,167 +243,296 @@
 
   // --- Testimonial slider (small, accessible) ---
   function initTestimonialSlider() {
-    const slider = document.querySelector('.testimonial-slider')
-    if (!slider) return
-    const track = slider.querySelector('.slider-track')
-    const slides = Array.from(track.children)
-    const prev = slider.querySelector('.slider-btn.prev')
-    const next = slider.querySelector('.slider-btn.next')
-    const dotsWrap = document.querySelector('.slider-dots')
-    if (!track || slides.length === 0) return
+    const slider = document.querySelector('.testimonial-slider');
+    if (!slider) return;
+    const track = slider.querySelector('.slider-track');
+    const slides = Array.from(track.children);
+    const prev = slider.querySelector('.slider-btn.prev');
+    const next = slider.querySelector('.slider-btn.next');
+    const dotsWrap = document.querySelector('.slider-dots');
+    if (!track || slides.length === 0) return;
 
-    let index = 0
+    let index = 0;
 
     function update() {
-      // Use slide position (offsetLeft) so gaps and padding don't cause
-      // misalignment. This avoids calculating width+gap and works when
-      // slides have varying min-widths.
-      const slide = slides[index]
-      const offset = slide ? slide.offsetLeft : 0
-      track.style.transform = `translateX(-${offset}px)`
-      // update dots
-      Array.from(dotsWrap.children).forEach((d, i) =>
-        d.classList.toggle('active', i === index)
-      )
-      // update aria
+      const slide = slides[index];
+      const offset = slide ? slide.offsetLeft : 0;
+      track.style.transform = `translateX(-${offset}px)`;
+      if (dotsWrap) {
+        Array.from(dotsWrap.children).forEach((d, i) =>
+          d.classList.toggle('active', i === index)
+        );
+      }
       slides.forEach((s, i) =>
         s.setAttribute('aria-hidden', i === index ? 'false' : 'true')
-      )
+      );
     }
 
-    // build dots
-    slides.forEach((_, i) => {
-      const dot = document.createElement('button')
-      dot.className = 'slider-dot'
-      dot.setAttribute('aria-label', `Show testimonial ${i + 1}`)
-      dot.addEventListener('click', () => {
-        index = i
-        update()
-      })
-      dotsWrap.appendChild(dot)
-    })
+    // schedule updates across paint/load so we don't keep a stale offset
+    function scheduleUpdate() {
+      update();
+      requestAnimationFrame(update);
+      setTimeout(update, 120);
+    }
+
+    // build dots (if present)
+    if (dotsWrap) {
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'slider-dot';
+        dot.setAttribute('aria-label', `Show testimonial ${i + 1}`);
+        dot.addEventListener('click', () => {
+          index = i;
+          update();
+        });
+        dotsWrap.appendChild(dot);
+      });
+    }
 
     prev.addEventListener('click', () => {
-      index = (index - 1 + slides.length) % slides.length
-      update()
-    })
+      index = (index - 1 + slides.length) % slides.length;
+      update();
+    });
     next.addEventListener('click', () => {
-      index = (index + 1) % slides.length
-      update()
-    })
+      index = (index + 1) % slides.length;
+      update();
+    });
 
-    // initial
-    update()
-    // responsive: update on resize to recalc widths
-    window.addEventListener('resize', update)
-    // touch swipe support for mobile
-    let startX = 0
-    let currentX = 0
-    let swiping = false
+    // initial and resilient recalculation
+    scheduleUpdate();
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('load', scheduleUpdate);
+
+    // touch swipe support for mobile — ignore primarily vertical gestures
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let swiping = false;
+    const HORIZ_THRESHOLD = 40;
+    const VERT_CANCEL = 10;
+
     slider.addEventListener(
       'touchstart',
       (e) => {
-        if (!e.touches || e.touches.length !== 1) return
-        startX = e.touches[0].clientX
-        currentX = startX
-        swiping = true
+        if (!e.touches || e.touches.length !== 1) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        currentX = startX;
+        currentY = startY;
+        swiping = true;
       },
       { passive: true }
-    )
+    );
+
     slider.addEventListener(
       'touchmove',
       (e) => {
-        if (!swiping || !e.touches || e.touches.length !== 1) return
-        currentX = e.touches[0].clientX
+        if (!swiping || !e.touches || e.touches.length !== 1) return;
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+        const dx = currentX - startX;
+        const dy = currentY - startY;
+
+        // If the movement is primarily vertical (and beyond a small threshold),
+        // cancel the swipe handling so normal page scrolling continues.
+        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > VERT_CANCEL) {
+          swiping = false;
+          return;
+        }
+        // otherwise allow horizontal detection to continue
       },
       { passive: true }
-    )
-    slider.addEventListener('touchend', () => {
-      if (!swiping) return
-      const delta = currentX - startX
-      if (delta > 40) {
-        index = (index - 1 + slides.length) % slides.length
-        update()
-      } else if (delta < -40) {
-        index = (index + 1) % slides.length
-        update()
-      }
-      swiping = false
-    })
+    );
+
+    slider.addEventListener(
+      'touchend',
+      () => {
+        if (!swiping) return;
+        const delta = currentX - startX;
+        if (delta > HORIZ_THRESHOLD) {
+          index = (index - 1 + slides.length) % slides.length;
+          update();
+        } else if (delta < -HORIZ_THRESHOLD) {
+          index = (index + 1) % slides.length;
+          update();
+        }
+        swiping = false;
+        // re-run an update after the potential transition to ensure alignment
+        setTimeout(scheduleUpdate, 60);
+      },
+      { passive: true }
+    );
   }
 
   // init the testimonial slider independently
-  initTestimonialSlider()
+  initTestimonialSlider();
 
   // Add read-more toggles for long testimonial paragraphs
   function initTestimonialReadMore() {
-    const testimonials = Array.from(document.querySelectorAll('.testimonial'))
-    const threshold = 120 // px
+    const testimonials = Array.from(document.querySelectorAll('.testimonial'));
+    const threshold = 120; // px
     testimonials.forEach((t) => {
       // avoid reprocessing the same testimonial
-      if (t.dataset.readmoreApplied === 'true') return
-      const p = t.querySelector('blockquote > p')
-      if (!p) return
+      if (t.dataset.readmoreApplied === 'true') return;
+      const p = t.querySelector('blockquote > p');
+      if (!p) return;
       // if the paragraph is taller than a threshold, collapse and add button
       // use scrollHeight to measure full content height
       if (p.scrollHeight > threshold) {
         // Create the toggle button
-        const btn = document.createElement('button')
-        btn.className = 'read-more-btn'
-        btn.type = 'button'
-        btn.textContent = 'Read more'
-        btn.setAttribute('aria-expanded', 'false')
+        const btn = document.createElement('button');
+        btn.className = 'read-more-btn';
+        btn.type = 'button';
+        btn.textContent = 'Read more';
+        btn.setAttribute('aria-expanded', 'false');
         btn.addEventListener('click', () => {
-          const expanded = btn.getAttribute('aria-expanded') === 'true'
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
           if (expanded) {
-            p.classList.add('collapsed')
-            btn.textContent = 'Read more'
-            btn.setAttribute('aria-expanded', 'false')
+            p.classList.add('collapsed');
+            btn.textContent = 'Read more';
+            btn.setAttribute('aria-expanded', 'false');
           } else {
-            p.classList.remove('collapsed')
-            btn.textContent = 'Show less'
-            btn.setAttribute('aria-expanded', 'true')
+            p.classList.remove('collapsed');
+            btn.textContent = 'Show less';
+            btn.setAttribute('aria-expanded', 'true');
           }
-        })
+        });
 
         // insert button into DOM
-        p.parentNode.insertBefore(btn, p.nextSibling)
+        p.parentNode.insertBefore(btn, p.nextSibling);
 
         // Ensure initial collapse animates: start expanded, then add the
         // collapsed class after paint so the max-height transition runs.
-        p.classList.remove('collapsed')
+        p.classList.remove('collapsed');
         // double rAF to ensure layout has been painted
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            p.classList.add('collapsed')
-          })
-        })
+            p.classList.add('collapsed');
+          });
+        });
       }
       // mark as processed so future runs skip it
-      t.dataset.readmoreApplied = 'true'
-    })
+      t.dataset.readmoreApplied = 'true';
+    });
   }
 
   // run again on load in case fonts/images change measurement
-  window.addEventListener('load', initTestimonialReadMore)
-  initTestimonialReadMore()
+  window.addEventListener('load', initTestimonialReadMore);
+  initTestimonialReadMore();
 
   // observe for testimonials added after initial run (e.g., via CMS or dynamic edits)
-  const testimonialContainer = document.querySelector('.testimonials')
+  const testimonialContainer = document.querySelector('.testimonials');
   if (testimonialContainer && 'MutationObserver' in window) {
     const mo = new MutationObserver((mutations) => {
-      let added = false
+      let added = false;
       for (const m of mutations) {
         if (m.type === 'childList' && m.addedNodes.length) {
-          added = true
-          break
+          added = true;
+          break;
         }
       }
       if (added) {
         // small delay to allow layout to settle
-        setTimeout(initTestimonialReadMore, 60)
+        setTimeout(initTestimonialReadMore, 60);
       }
-    })
-    mo.observe(testimonialContainer, { childList: true, subtree: true })
+    });
+    mo.observe(testimonialContainer, { childList: true, subtree: true });
   }
-})()
+})()(
+  /* Add: safer testimonial/carousel touch handling to avoid accidental slide switching on vertical scroll */
+  function () {
+    // Configure thresholds
+    const VERTICAL_THRESHOLD_PX = 20; // ignore small vertical moves
+    const DEBOUNCE_MS = 200; // debounce switching
+
+    // Utility: debounce
+    function debounce(fn, wait) {
+      let t;
+      return function (...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+
+    // Find carousels/testimonial lists by common class names
+    const carousels = document.querySelectorAll(
+      '.testimonials, .carousel, .testimonial-list'
+    );
+    carousels.forEach((el) => {
+      let startX = 0;
+      let startY = 0;
+      let moved = false;
+      let isPointerDown = false;
+
+      // track pointer start
+      el.addEventListener(
+        'pointerdown',
+        (e) => {
+          isPointerDown = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          moved = false;
+          // ensure we get pointer events even if touch moves outside
+          el.setPointerCapture && el.setPointerCapture(e.pointerId);
+        },
+        { passive: true }
+      );
+
+      // pointer move: determine if move is primarily vertical -> if so, do not treat as slide
+      el.addEventListener(
+        'pointermove',
+        (e) => {
+          if (!isPointerDown) return;
+          const dx = Math.abs(e.clientX - startX);
+          const dy = Math.abs(e.clientY - startY);
+          if (dy > VERTICAL_THRESHOLD_PX && dy > dx) {
+            // mark as vertical scroll, let native scrolling happen; prevent slide logic
+            moved = true;
+          }
+        },
+        { passive: true }
+      );
+
+      // pointerup: only handle as swipe if it wasn't a vertical move
+      el.addEventListener(
+        'pointerup',
+        (e) => {
+          isPointerDown = false;
+          // release capture if set
+          try {
+            el.releasePointerCapture && el.releasePointerCapture(e.pointerId);
+          } catch (err) {}
+          if (moved) return; // user was scrolling vertically
+          // Otherwise, you can run your existing next/prev logic here.
+          // If you already have a handler for swipe, call it via debounce to avoid rapid flips:
+          // example: debouncedHandleSwipe(e);
+        },
+        { passive: true }
+      );
+
+      // If your carousel uses wheel/scroll events to change slide, make them less eager:
+      const debouncedWheelHandler = debounce((ev) => {
+        // Only handle substantial horizontal wheel gestures
+        // Placeholder: call your existing wheel handler here if you have one.
+      }, DEBOUNCE_MS);
+
+      el.addEventListener(
+        'wheel',
+        (ev) => {
+          // if mostly vertical wheel, ignore
+          if (Math.abs(ev.deltaY) > Math.abs(ev.deltaX)) return;
+          debouncedWheelHandler(ev);
+        },
+        { passive: true }
+      );
+
+      // Prevent accidental focus scroll on page load to avoid offset: optional guard
+      // If the page navigates to an anchor and your carousel is shifting, you can neutralize:
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = history.scrollRestoration || 'auto';
+        // do not force manual here unless you want to override default browser behavior
+      }
+    });
+  }
+)();
