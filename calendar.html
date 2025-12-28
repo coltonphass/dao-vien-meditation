@@ -26,7 +26,17 @@
   </head>
   <body class="lessons-page">
     <header class="header">
-      <h1>Calendar</h1>
+      
+
+      <div class="theme-toggle-top" aria-label="Theme toggle">
+        <input type="checkbox" class="checkbox" id="checkbox" aria-label="Toggle dark mode" />
+        <label for="checkbox" class="checkbox-label" title="Toggle light/dark">
+              <span class="icon">🌞</span>
+              <span class="icon">🌛</span>
+          <span class="ball" aria-hidden="true"></span>
+        </label>
+      </div>
+<h1>Calendar</h1>
       <a href="index.html" class="btn back-btn">Back to home</a>
     </header>
 
@@ -35,32 +45,8 @@
         <h2>Upcoming events</h2>
         <div class="calendar-viewport">
           <!-- Placeholder that lazy-loads the Google Calendar iframe on user interaction or when visible -->
-          <div
-            id="calendar-placeholder"
-            style="
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background: #fff;
-            "
-          >
-            <button
-              id="load-calendar"
-              class="btn"
-              style="
-                background: #6b8e6f;
-                color: #fff;
-                padding: 10px 16px;
-                border-radius: 8px;
-              "
-            >
-              Load Calendar
-            </button>
+          <div id="calendar-placeholder" class="calendar-placeholder">
+            <button id="load-calendar" class="btn load-calendar-btn">Load Calendar</button>
           </div>
         </div>
         <script>
@@ -109,5 +95,6 @@
     </main>
 
     <footer class="footer">&copy; Dao Vien Meditation</footer>
+      <script src="script.js" defer></script>
   </body>
 </html>
