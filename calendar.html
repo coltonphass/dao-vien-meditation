@@ -1,100 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Calendar — Dao Vien Meditation</title>
-    <meta
-      name="description"
-      content="Dao Vien Sangha calendar — view upcoming events and gatherings."
-    />
-    <link rel="canonical" href="https://daovienmeditation.com/calendar.html" />
-    <meta property="og:title" content="Dao Vien Sangha Calendar" />
-    <meta
-      property="og:description"
-      content="View upcoming Dao Vien meditation sessions and events."
-    />
-    <meta
-      property="og:image"
-      content="https://daovienmeditation.com/buddha.avif"
-    />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="style.css" />
-    <!-- Preconnect to Google origins to reduce connection setup time for the calendar iframe -->
-    <link rel="preconnect" href="https://calendar.google.com" />
-    <link rel="preconnect" href="https://www.google.com" />
-  </head>
-  <body class="lessons-page">
-    <header class="header">
-      
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Calendar — Dao Vien Meditation</title>
+		<meta
+			name="description"
+			content="Dao Vien Sangha calendar — view upcoming events and gatherings."
+		/>
+		<link rel="canonical" href="https://daovienmeditation.com/calendar.html" />
+		<meta property="og:title" content="Dao Vien Sangha Calendar" />
+		<meta
+			property="og:description"
+			content="View upcoming Dao Vien meditation sessions and events."
+		/>
+		<meta
+			property="og:image"
+			content="https://daovienmeditation.com/buddha.avif"
+		/>
+		<meta name="twitter:card" content="summary_large_image" />
+		<link rel="stylesheet" href="style.css" />
+		<!-- Preconnect to Google origins to reduce connection setup time for the calendar iframe -->
+		<link rel="preconnect" href="https://calendar.google.com" />
+		<link rel="preconnect" href="https://www.google.com" />
+	</head>
+	<body class="lessons-page">
+		<header class="header">
+			<div class="theme-toggle-top" aria-label="Theme toggle">
+				<input
+					type="checkbox"
+					class="checkbox"
+					id="checkbox"
+					aria-label="Toggle dark mode"
+				/>
+				<label for="checkbox" class="checkbox-label" title="Toggle light/dark">
+					<span class="icon sun" aria-hidden="true">🌞</span>
+					<span class="icon moon" aria-hidden="true">🌛</span>
+					<span class="ball" aria-hidden="true"></span>
+				</label>
+			</div>
+			<h1>Calendar</h1>
+			<div class="header-actions">
+				<a href="index.html" class="btn">← Back to Home</a>
+			</div>
+		</header>
 
-      <div class="theme-toggle-top" aria-label="Theme toggle">
-        <input type="checkbox" class="checkbox" id="checkbox" aria-label="Toggle dark mode" />
-        <label for="checkbox" class="checkbox-label" title="Toggle light/dark">
-              <span class="icon">🌞</span>
-              <span class="icon">🌛</span>
-          <span class="ball" aria-hidden="true"></span>
-        </label>
-      </div>
-<h1>Calendar</h1>
-      <a href="index.html" class="btn back-btn">Back to home</a>
-    </header>
+		<main class="main">
+			<section class="calendar-section">
+				<h2>Upcoming events</h2>
+				<div class="calendar-viewport">
+					<!-- Placeholder that lazy-loads the Google Calendar iframe on user interaction or when visible -->
+					<div id="calendar-placeholder" class="calendar-placeholder">
+						<button id="load-calendar" class="btn load-calendar-btn">
+							Load Calendar
+						</button>
+					</div>
+				</div>
+				<script>
+					(function () {
+						const placeholder = document.getElementById("calendar-placeholder");
+						const loadBtn = document.getElementById("load-calendar");
+						const iframeSrc =
+							"https://calendar.google.com/calendar/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York";
 
-    <main class="main">
-      <section class="calendar-section">
-        <h2>Upcoming events</h2>
-        <div class="calendar-viewport">
-          <!-- Placeholder that lazy-loads the Google Calendar iframe on user interaction or when visible -->
-          <div id="calendar-placeholder" class="calendar-placeholder">
-            <button id="load-calendar" class="btn load-calendar-btn">Load Calendar</button>
-          </div>
-        </div>
-        <script>
-          ;(function () {
-            const placeholder = document.getElementById('calendar-placeholder')
-            const loadBtn = document.getElementById('load-calendar')
-            const iframeSrc =
-              'https://calendar.google.com/calendar/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York'
+						function insertIframe() {
+							if (!placeholder) return;
+							if (placeholder.dataset.loaded === "true") return;
+							const iframe = document.createElement("iframe");
+							iframe.className = "calendar-iframe";
+							iframe.src = iframeSrc;
+							iframe.frameBorder = "0";
+							iframe.scrolling = "no";
+							iframe.setAttribute(
+								"aria-label",
+								"Dao Vien Sangha events calendar",
+							);
+							placeholder.innerHTML = "";
+							placeholder.appendChild(iframe);
+							placeholder.dataset.loaded = "true";
+						}
 
-            function insertIframe() {
-              if (!placeholder) return
-              if (placeholder.dataset.loaded === 'true') return
-              const iframe = document.createElement('iframe')
-              iframe.className = 'calendar-iframe'
-              iframe.src = iframeSrc
-              iframe.frameBorder = '0'
-              iframe.scrolling = 'no'
-              iframe.setAttribute(
-                'aria-label',
-                'Dao Vien Sangha events calendar'
-              )
-              placeholder.innerHTML = ''
-              placeholder.appendChild(iframe)
-              placeholder.dataset.loaded = 'true'
-            }
+						if (loadBtn) loadBtn.addEventListener("click", insertIframe);
 
-            if (loadBtn) loadBtn.addEventListener('click', insertIframe)
+						if ("IntersectionObserver" in window) {
+							const io = new IntersectionObserver(
+								(entries, obs) => {
+									entries.forEach((e) => {
+										if (e.isIntersecting) {
+											insertIframe();
+											obs.disconnect();
+										}
+									});
+								},
+								{ rootMargin: "200px" },
+							);
+							io.observe(placeholder);
+						}
+					})();
+				</script>
+			</section>
+		</main>
 
-            if ('IntersectionObserver' in window) {
-              const io = new IntersectionObserver(
-                (entries, obs) => {
-                  entries.forEach((e) => {
-                    if (e.isIntersecting) {
-                      insertIframe()
-                      obs.disconnect()
-                    }
-                  })
-                },
-                { rootMargin: '200px' }
-              )
-              io.observe(placeholder)
-            }
-          })()
-        </script>
-      </section>
-    </main>
-
-    <footer class="footer">&copy; Dao Vien Meditation</footer>
-      <script src="script.js" defer></script>
-  </body>
+		<footer class="footer">&copy; Dao Vien Meditation</footer>
+		<script src="script.js" defer></script>
+	</body>
 </html>
