@@ -345,6 +345,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     '<figure class="lightbox-stage">' +
     '<img class="lightbox-img" alt="" />' +
     '<figcaption class="lightbox-caption"></figcaption>' +
+    '<a class="lightbox-openfull" target="_blank" rel="noopener">Open full image ↗</a>' +
     '</figure>';
   document.body.appendChild(overlay);
 
@@ -354,6 +355,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   const prevBtn = overlay.querySelector('.prev');
   const nextBtn = overlay.querySelector('.next');
   const closeBtn = overlay.querySelector('.lightbox-close');
+  const openFullLink = overlay.querySelector('.lightbox-openfull');
 
   let group = [];
   let index = 0;
@@ -362,11 +364,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   function render() {
     const item = group[index];
     if (!item) return;
-    imgEl.classList.remove('is-zoomed');
     stageEl.scrollTop = 0;
-    stageEl.scrollLeft = 0;
     imgEl.src = item.src;
     imgEl.alt = item.alt || '';
+    if (openFullLink) openFullLink.href = item.src;
     capEl.textContent = item.alt || '';
     capEl.style.display = item.alt ? '' : 'none';
     const multi = group.length > 1;
@@ -419,13 +420,33 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
   });
 
+  // Open the raw image on its own so the browser's native pinch-zoom / pan can take over
+  function openFull() {
+    const item = group[index];
+    if (item) window.open(item.src, '_blank', 'noopener');
+  }
+
   closeBtn.addEventListener('click', close);
   prevBtn.addEventListener('click', () => step(-1));
   nextBtn.addEventListener('click', () => step(1));
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay || e.target === stageEl) close();
   });
-  imgEl.addEventListener('click', () => imgEl.classList.toggle('is-zoomed'));
+
+  // Double-tap / double-click the image to open it full size in a new tab
+  let lastTap = 0;
+  imgEl.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      lastTap = 0;
+      openFull();
+    } else {
+      lastTap = now;
+    }
+  });
+  if (openFullLink) {
+    openFullLink.addEventListener('click', (e) => e.stopPropagation());
+  }
 
   document.addEventListener('keydown', (e) => {
     if (!overlay.classList.contains('is-open')) return;
