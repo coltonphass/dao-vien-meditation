@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<title>Calendar — Dao Vien Meditation</title>
+		<title>Calendar | Dao Vien Meditation</title>
 		<meta
 			name="description"
-			content="Dao Vien Sangha calendar — view upcoming events and gatherings."
+			content="Dao Vien Sangha calendar. View upcoming events and gatherings."
 		/>
 		<link rel="canonical" href="https://daovienmeditation.com/calendar.html" />
 		<meta property="og:title" content="Dao Vien Sangha Calendar" />
@@ -19,56 +19,120 @@
 			content="https://daovienmeditation.com/buddha.avif"
 		/>
 		<meta name="twitter:card" content="summary_large_image" />
-		<link rel="stylesheet" href="style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="/style.css" />
 		<!-- Preconnect to Google origins to reduce connection setup time for the calendar iframe -->
 		<link rel="preconnect" href="https://calendar.google.com" />
 		<link rel="preconnect" href="https://www.google.com" />
 	</head>
 	<body class="lessons-page">
-		<header class="header">
-			<div class="theme-toggle-top" aria-label="Theme toggle">
-				<input
-					type="checkbox"
-					class="checkbox"
-					id="checkbox"
-					aria-label="Toggle dark mode"
-				/>
-				<label for="checkbox" class="checkbox-label" title="Toggle light/dark">
-					<span class="icon sun" aria-hidden="true">🌞</span>
-					<span class="icon moon" aria-hidden="true">🌛</span>
-					<span class="ball" aria-hidden="true"></span>
-				</label>
-			</div>
-			<h1>Calendar</h1>
-			<div class="header-actions">
-				<a href="index.html" class="btn">← Back to Home</a>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<header class="site-nav">
+			<div class="nav-inner">
+				<a class="nav-brand" href="/index.html">
+					<img src="/logo-tuvien.png" alt="" width="34" height="34" />
+					<span>Dao Vien</span>
+				</a>
+				<button
+					class="nav-toggle"
+					type="button"
+					aria-label="Toggle menu"
+					aria-expanded="false"
+					aria-controls="nav-links"
+				>
+					<span></span><span></span><span></span>
+				</button>
+				<nav class="nav-links" id="nav-links" aria-label="Primary">
+					<a href="/index.html">Home</a>
+					<a href="/lessons.html">Lessons</a>
+					<a href="/chants.html">Chants</a>
+					<a href="/calendar.html">Calendar</a>
+					<div class="theme-toggle-top">
+						<input id="checkbox" class="checkbox" type="checkbox" />
+						<label
+							for="checkbox"
+							class="checkbox-label"
+							aria-label="Toggle dark mode"
+						>
+							<svg class="icon sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M1.5 12h2.5M20 12h2.5M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>
+							<svg class="icon moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+							<span class="ball" aria-hidden="true"></span>
+						</label>
+					</div>
+				</nav>
 			</div>
 		</header>
 
-		<main class="main">
+		<div class="page-head">
+			<p class="eyebrow">Gather</p>
+			<h1>Calendar</h1>
+			<p class="lede">Upcoming meditation sessions, gatherings, and events.</p>
+		</div>
+
+
+		<main class="main" id="main">
 			<section class="calendar-section">
-				<h2>Upcoming events</h2>
+				<div class="calendar-header">
+					<div>
+						<h2>Upcoming events</h2>
+						<p class="muted">All times shown in Eastern Time (ET).</p>
+					</div>
+					<a
+						class="btn btn-ghost"
+						href="https://calendar.google.com/calendar/u/0/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York"
+						target="_blank"
+						rel="noopener"
+						>Open in Google Calendar ↗</a
+					>
+				</div>
 				<div class="calendar-viewport">
 					<!-- Placeholder that lazy-loads the Google Calendar iframe on user interaction or when visible -->
 					<div id="calendar-placeholder" class="calendar-placeholder">
-						<button id="load-calendar" class="btn load-calendar-btn">
-							Load Calendar
-						</button>
+						<div class="calendar-placeholder-inner">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.6"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<rect x="3" y="4.5" width="18" height="16" rx="2.5" />
+								<path d="M3 9h18M8 2.5v4M16 2.5v4" />
+							</svg>
+							<p>View our gathering and meditation schedule.</p>
+							<button id="load-calendar" class="btn btn-primary">
+								Load calendar
+							</button>
+						</div>
 					</div>
 				</div>
 				<script>
 					(function () {
 						const placeholder = document.getElementById("calendar-placeholder");
 						const loadBtn = document.getElementById("load-calendar");
-						const iframeSrc =
-							"https://calendar.google.com/calendar/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York";
+						// Month grid fills the width on desktop; agenda list reads better on phones.
+						const baseSrc =
+							"https://calendar.google.com/calendar/embed?src=d058cf336ab563eb85ccb619a0fb8b28950de4fa35db13bf7b2d98ac5c325b2c%40group.calendar.google.com&ctz=America%2FNew_York&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&showNav=1&showDate=1&bgcolor=%23fbfaf7";
+						const buildSrc = () =>
+							baseSrc +
+							"&mode=" +
+							(window.matchMedia("(min-width: 768px)").matches
+								? "MONTH"
+								: "AGENDA");
 
 						function insertIframe() {
 							if (!placeholder) return;
 							if (placeholder.dataset.loaded === "true") return;
 							const iframe = document.createElement("iframe");
 							iframe.className = "calendar-iframe";
-							iframe.src = iframeSrc;
+							iframe.src = buildSrc();
 							iframe.frameBorder = "0";
 							iframe.scrolling = "no";
 							iframe.setAttribute(
@@ -101,7 +165,25 @@
 			</section>
 		</main>
 
-		<footer class="footer">&copy; Dao Vien Meditation</footer>
-		<script src="script.js" defer></script>
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<div class="footer-brand">
+					<img src="/logo-tuvien.png" alt="" width="44" height="44" />
+					<div>
+						<p class="footer-title">Dao Vien Meditation</p>
+						<p class="footer-tag">A sangha practicing the Dharma together.</p>
+					</div>
+				</div>
+				<nav class="footer-nav" aria-label="Footer">
+					<a href="/lessons.html">Lessons</a>
+					<a href="/chants.html">Chants</a>
+					<a href="/calendar.html">Calendar</a>
+				</nav>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; <span data-year>2026</span> Dao Vien Meditation. Made with mettā.</p>
+			</div>
+		</footer>
+<script src="/script.js" defer></script>
 	</body>
 </html>

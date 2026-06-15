@@ -1,3 +1,46 @@
+/* ===== SITE NAV (active link, mobile toggle) ===== */
+(function initNav() {
+  const nav = document.querySelector('.site-nav');
+  if (!nav) return;
+
+  // Highlight the current page's link
+  const path = window.location.pathname.replace(/\/index\.html$/, '/');
+  const links = nav.querySelectorAll('.nav-links a[href]');
+  let bestMatch = null;
+  links.forEach((a) => {
+    const href = new URL(a.getAttribute('href'), window.location.origin).pathname
+      .replace(/\/index\.html$/, '/');
+    if (href === path) bestMatch = a;
+    // Section pages: e.g. /lessons/lesson-2.html should light up "Lessons"
+    else if (href !== '/' && path.startsWith(href.replace(/\.html$/, '/'))) bestMatch = a;
+  });
+  if (bestMatch) bestMatch.classList.add('is-active');
+
+  // Mobile menu toggle
+  const toggle = nav.querySelector('.nav-toggle');
+  const menu = nav.querySelector('.nav-links');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    // Close menu after navigating on mobile
+    menu.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', () => {
+        menu.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+})();
+
+/* ===== FOOTER YEAR ===== */
+(function setYear() {
+  document.querySelectorAll('[data-year]').forEach((el) => {
+    el.textContent = String(new Date().getFullYear());
+  });
+})();
+
 /* ===== SCAN CAPTIONS ===== */
 (function addScanCaptions() {
   function ensureCaptions() {
@@ -282,3 +325,112 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+/* ===== IMAGE LIGHTBOX ===== */
+(function initLightbox() {
+  const galleryLinks = Array.from(document.querySelectorAll('.slides a[href]'));
+  const figureImgs = Array.from(document.querySelectorAll('.lesson-figure img'));
+  if (galleryLinks.length === 0 && figureImgs.length === 0) return;
+
+  // Build the overlay once
+  const overlay = document.createElement('div');
+  overlay.className = 'lightbox';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Image viewer');
+  overlay.innerHTML =
+    '<button class="lightbox-close" type="button" aria-label="Close (Esc)">✕</button>' +
+    '<button class="lightbox-nav prev" type="button" aria-label="Previous image">‹</button>' +
+    '<button class="lightbox-nav next" type="button" aria-label="Next image">›</button>' +
+    '<figure class="lightbox-stage">' +
+    '<img class="lightbox-img" alt="" />' +
+    '<figcaption class="lightbox-caption"></figcaption>' +
+    '</figure>';
+  document.body.appendChild(overlay);
+
+  const imgEl = overlay.querySelector('.lightbox-img');
+  const capEl = overlay.querySelector('.lightbox-caption');
+  const stageEl = overlay.querySelector('.lightbox-stage');
+  const prevBtn = overlay.querySelector('.prev');
+  const nextBtn = overlay.querySelector('.next');
+  const closeBtn = overlay.querySelector('.lightbox-close');
+
+  let group = [];
+  let index = 0;
+  let lastFocus = null;
+
+  function render() {
+    const item = group[index];
+    if (!item) return;
+    imgEl.classList.remove('is-zoomed');
+    stageEl.scrollTop = 0;
+    stageEl.scrollLeft = 0;
+    imgEl.src = item.src;
+    imgEl.alt = item.alt || '';
+    capEl.textContent = item.alt || '';
+    capEl.style.display = item.alt ? '' : 'none';
+    const multi = group.length > 1;
+    prevBtn.hidden = !multi;
+    nextBtn.hidden = !multi;
+  }
+
+  function open(items, i) {
+    group = items;
+    index = i;
+    lastFocus = document.activeElement;
+    render();
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function close() {
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+    imgEl.removeAttribute('src');
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+  }
+
+  function step(delta) {
+    if (group.length < 2) return;
+    index = (index + delta + group.length) % group.length;
+    render();
+  }
+
+  // Wire scan galleries (prev/next stays within the same .slides set)
+  document.querySelectorAll('.slides').forEach((slides) => {
+    const links = Array.from(slides.querySelectorAll('a[href]'));
+    const items = links.map((a) => ({
+      src: a.getAttribute('href'),
+      alt: (a.querySelector('img') && a.querySelector('img').alt) || ''
+    }));
+    links.forEach((a, i) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        open(items, i);
+      });
+    });
+  });
+
+  // Standalone in-article figures
+  figureImgs.forEach((img) => {
+    img.addEventListener('click', () => {
+      open([{ src: img.getAttribute('src'), alt: img.alt }], 0);
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', () => step(-1));
+  nextBtn.addEventListener('click', () => step(1));
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay || e.target === stageEl) close();
+  });
+  imgEl.addEventListener('click', () => imgEl.classList.toggle('is-zoomed'));
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+  });
+})();

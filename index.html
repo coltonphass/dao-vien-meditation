@@ -6,7 +6,7 @@
 		<title>Dao Vien Meditation</title>
 		<meta
 			name="description"
-			content="Dao Vien Meditation — weekly community meditation and Dharma talks. Find lessons, slides, and our event calendar."
+			content="Dao Vien Meditation: weekly community meditation and Dharma talks. Find lessons, slides, and our event calendar."
 		/>
 		<link rel="canonical" href="https://daovienmeditation.com/" />
 		<!-- Open Graph -->
@@ -32,12 +32,12 @@
 			name="twitter:image"
 			content="https://daovienmeditation.com/buddha.avif"
 		/>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-			rel="stylesheet"
-		/>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<!-- Preload hero image to improve LCP prioritization -->
 		<link rel="preload" as="image" href="buddha.avif" />
 		<link rel="stylesheet" href="style.css" />
@@ -46,6 +46,43 @@
 		<link rel="apple-touch-icon" href="logo-tuvien.png" />
 	</head>
 	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<header class="site-nav">
+			<div class="nav-inner">
+				<a class="nav-brand" href="/index.html">
+					<img src="/logo-tuvien.png" alt="" width="34" height="34" />
+					<span>Dao Vien</span>
+				</a>
+				<button
+					class="nav-toggle"
+					type="button"
+					aria-label="Toggle menu"
+					aria-expanded="false"
+					aria-controls="nav-links"
+				>
+					<span></span><span></span><span></span>
+				</button>
+				<nav class="nav-links" id="nav-links" aria-label="Primary">
+					<a href="/index.html">Home</a>
+					<a href="/lessons.html">Lessons</a>
+					<a href="/chants.html">Chants</a>
+					<a href="/calendar.html">Calendar</a>
+					<div class="theme-toggle-top">
+						<input id="checkbox" class="checkbox" type="checkbox" />
+						<label
+							for="checkbox"
+							class="checkbox-label"
+							aria-label="Toggle dark mode"
+						>
+							<svg class="icon sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M1.5 12h2.5M20 12h2.5M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>
+							<svg class="icon moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+							<span class="ball" aria-hidden="true"></span>
+						</label>
+					</div>
+				</nav>
+			</div>
+		</header>
+
 		<section class="hero-section">
 			<div class="hero-background">
 				<div class="floating-circle circle-1"></div>
@@ -54,37 +91,31 @@
 			</div>
 
 			<div class="hero-content">
-				<header class="hero-header">
-					<h1 class="hero-title">Dao Vien Meditation</h1>
-
-					<div class="theme-toggle-top">
-						<input id="checkbox" class="checkbox" type="checkbox" />
-						<label for="checkbox" class="checkbox-label" aria-hidden="true">
-							<span class="icon sun" aria-hidden="true">🌞</span>
-							<span class="icon moon" aria-hidden="true">🌛</span>
-							<span class="ball"></span>
-						</label>
-					</div>
-				</header>
-
-				<main class="hero-main">
-					<section class="intro">
+				<main class="hero-main" id="main">
+					<div class="intro">
+						<p class="eyebrow">Tu Viện Đạo Viên · Sangha</p>
+						<h1 class="hero-title">
+							A place to <span class="accent">study, practice,</span> and share
+							the Dharma
+						</h1>
 						<p class="hero-text">
 							Welcome to our sangha. We meet weekly to study, practice, and
-							share the Dharma together. Below you'll find materials and slides
-							from our lessons.
+							share the Dharma together. Here you'll find lesson materials,
+							chants, and our event calendar.
 						</p>
 						<div class="hero-cta">
-							<a href="lessons.html" class="btn hero-btn">Go to Lessons</a>
-							<a href="chants.html" class="btn hero-btn">Go to Chants</a>
-							<a href="calendar.html" class="btn hero-btn">Calendar</a>
+							<a href="/lessons.html" class="btn btn-primary hero-btn"
+								>Explore Lessons</a
+							>
+							<a href="/chants.html" class="btn btn-ghost hero-btn">View Chants</a>
+							<a href="/calendar.html" class="btn btn-ghost hero-btn">Calendar</a>
 						</div>
-					</section>
+					</div>
 
 					<div class="buddha-container">
 						<img
 							src="buddha.avif"
-							alt="Buddha"
+							alt="A serene depiction of the Buddha in meditation"
 							class="buddha-img"
 							width="2305"
 							height="1671"
@@ -100,7 +131,10 @@
 		<!-- Testimonials: carousel with avatars -->
 		<section class="testimonials">
 			<div class="container">
-				<h2 class="testimonials-title">What people say</h2>
+				<div class="testimonials-head">
+					<p class="eyebrow">Voices from the sangha</p>
+					<h2 class="testimonials-title">What people say</h2>
+				</div>
 
 				<div class="testimonial-slider" aria-roledescription="carousel">
 					<button class="slider-btn prev" aria-label="Previous testimonial">
@@ -158,7 +192,7 @@
 										do anything perfectly. The peace you’ve been looking for
 										might be waiting for you here. "
 									</p>
-									<footer class="cite">— Soleil</footer>
+									<footer class="cite">Soleil</footer>
 								</blockquote>
 							</div>
 
@@ -190,7 +224,7 @@
 										Dao Vien has truly become a second home and a path to
 										liberation."
 									</p>
-									<footer class="cite">— Colton</footer>
+									<footer class="cite">Colton</footer>
 								</blockquote>
 							</div>
 						</div>
@@ -209,6 +243,26 @@
 			</div>
 		</section>
 
-		<script src="script.js" defer></script>
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<div class="footer-brand">
+					<img src="/logo-tuvien.png" alt="" width="44" height="44" />
+					<div>
+						<p class="footer-title">Dao Vien Meditation</p>
+						<p class="footer-tag">A sangha practicing the Dharma together.</p>
+					</div>
+				</div>
+				<nav class="footer-nav" aria-label="Footer">
+					<a href="/lessons.html">Lessons</a>
+					<a href="/chants.html">Chants</a>
+					<a href="/calendar.html">Calendar</a>
+				</nav>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; <span data-year>2026</span> Dao Vien Meditation. Made with mettā.</p>
+			</div>
+		</footer>
+
+		<script src="/script.js" defer></script>
 	</body>
 </html>

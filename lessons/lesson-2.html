@@ -3,35 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lesson 2 — Mindfulness of Breathing | Dao Vien Meditation</title>
+    <title>Lesson 2: Mindfulness of Breathing | Dao Vien Meditation</title>
     <meta
       name="description"
-      content="Lesson 2 — Mindfulness of Breathing. Text-first lesson with the original handout scans below."
+      content="Lesson 2: Mindfulness of Breathing. Text-first lesson with the original handout scans below."
     />
-    <link rel="stylesheet" href="../style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+    <link rel="stylesheet" href="/style.css" />
     <link rel="icon" type="image/png" href="../logo-tuvien.png" />
   </head>
 
   <body class="lessons-page">
-    <header class="header">
-      
+		<a class="skip-link" href="#main">Skip to content</a>
+		<header class="site-nav">
+			<div class="nav-inner">
+				<a class="nav-brand" href="/index.html">
+					<img src="/logo-tuvien.png" alt="" width="34" height="34" />
+					<span>Dao Vien</span>
+				</a>
+				<button
+					class="nav-toggle"
+					type="button"
+					aria-label="Toggle menu"
+					aria-expanded="false"
+					aria-controls="nav-links"
+				>
+					<span></span><span></span><span></span>
+				</button>
+				<nav class="nav-links" id="nav-links" aria-label="Primary">
+					<a href="/index.html">Home</a>
+					<a href="/lessons.html">Lessons</a>
+					<a href="/chants.html">Chants</a>
+					<a href="/calendar.html">Calendar</a>
+					<div class="theme-toggle-top">
+						<input id="checkbox" class="checkbox" type="checkbox" />
+						<label
+							for="checkbox"
+							class="checkbox-label"
+							aria-label="Toggle dark mode"
+						>
+							<svg class="icon sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M3.5 3.5l1.8 1.8M18.7 18.7l1.8 1.8M1.5 12h2.5M20 12h2.5M3.5 20.5l1.8-1.8M18.7 5.3l1.8-1.8"/></svg>
+							<svg class="icon moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+							<span class="ball" aria-hidden="true"></span>
+						</label>
+					</div>
+				</nav>
+			</div>
+		</header>
 
-      <div class="theme-toggle-top" aria-label="Theme toggle">
-        <input type="checkbox" class="checkbox" id="checkbox" aria-label="Toggle dark mode" />
-        <label for="checkbox" class="checkbox-label" title="Toggle light/dark">
-          <span class="icon sun" aria-hidden="true">🌞</span>
-          <span class="icon moon" aria-hidden="true">🌛</span>
-          <span class="ball" aria-hidden="true"></span>
-        </label>
-      </div>
-<h1>Lesson 2: Mindfulness of Breathing</h1>
-      <div class="header-actions">
-        <a href="../lessons.html" class="btn">← Back to Lessons</a>
-        <a href="../index.html" class="btn">Home</a>
-      </div>
-    </header>
+		<div class="page-head">
+			<p class="eyebrow">Weekly Lesson</p>
+			<h1>Lesson 2: Mindfulness of Breathing</h1>
+		</div>
 
-    <main class="main lesson-main">
+
+    <main class="main lesson-main" id="main">
       <!-- A) Clean text content (primary) -->
       <article class="lesson-article">
         <p class="lesson-meta">
@@ -157,13 +188,13 @@ able to respond, rather than cling.
 
           <div class="slides" data-lesson="2">
             <a href="../assets/lesson-2/breathing-steps.jpg" class="slide-link" target="_blank" rel="noopener">
-              <img src="../assets/lesson-2/breathing-steps.jpg" alt="Lesson 2 — Mindfulness of Breathing (steps)" loading="lazy" />
+              <img src="../assets/lesson-2/breathing-steps.jpg" alt="Lesson 2: Mindfulness of Breathing (steps)" loading="lazy" />
             </a>
             <a href="../assets/lesson-2/concentration-insight.jpg" class="slide-link" target="_blank" rel="noopener">
-              <img src="../assets/lesson-2/concentration-insight.jpg" alt="Lesson 2 — Concentration and Insight" loading="lazy" />
+              <img src="../assets/lesson-2/concentration-insight.jpg" alt="Lesson 2: Concentration and Insight" loading="lazy" />
             </a>
             <a href="../assets/lesson-2/sutta-quote.jpg" class="slide-link" target="_blank" rel="noopener">
-              <img src="../assets/lesson-2/sutta-quote.jpg" alt="Lesson 2 — Mindfulness of Breathing quote (scan)" loading="lazy" />
+              <img src="../assets/lesson-2/sutta-quote.jpg" alt="Lesson 2: Mindfulness of Breathing quote (scan)" loading="lazy" />
             </a>
           </div>
         </details>
@@ -175,6 +206,25 @@ able to respond, rather than cling.
       </nav>
     </main>
 
-    <script src="../script.js" defer></script>
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<div class="footer-brand">
+					<img src="/logo-tuvien.png" alt="" width="44" height="44" />
+					<div>
+						<p class="footer-title">Dao Vien Meditation</p>
+						<p class="footer-tag">A sangha practicing the Dharma together.</p>
+					</div>
+				</div>
+				<nav class="footer-nav" aria-label="Footer">
+					<a href="/lessons.html">Lessons</a>
+					<a href="/chants.html">Chants</a>
+					<a href="/calendar.html">Calendar</a>
+				</nav>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; <span data-year>2026</span> Dao Vien Meditation. Made with mettā.</p>
+			</div>
+		</footer>
+    <script src="/script.js" defer></script>
   </body>
 </html>
